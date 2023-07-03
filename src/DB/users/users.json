@@ -5,7 +5,7 @@
     "creation timestamp": "2023-07-03T08:14:53.372Z",
     "modification timestamp": "2023-07-03T11:15:37.220Z",
     "name": "test-new",
-    "age": 959,
+    "age": 16,
     "gender": "female"
   },
   {
@@ -34,15 +34,6 @@
     "name": "15",
     "age": 88,
     "gender": "male"
-  },
-  {
-    "id": 1688386256666,
-    "status": false,
-    "creation timestamp": "2023-07-03T12:10:56.666Z",
-    "modification timestamp": "2023-07-03T12:10:56.666Z",
-    "name": "test-new",
-    "age": 959,
-    "gender": "female"
   },
   {
     "id": 1688386313643,
