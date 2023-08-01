@@ -1,0 +1,15 @@
+version: '3'
+services:
+ myapp:
+  build: .
+  volumes:
+   - .:/usr/src/app
+   - /usr/src/app/node_modules
+  ports:
+   - 3000:3000
+  depends_on:
+   - mydb
+ mydb:
+  image: postgres
+  environment:
+    POSTGRES_PASSWORD: postgres
