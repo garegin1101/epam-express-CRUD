@@ -7,7 +7,7 @@
   "scripts": {
     "start": "ts-node --esm app.ts",
     "dev": "nodemon -L --ext \"ts,json\" --exec \"ts-node --esm app.ts\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test --loader ts-node/esm  \"./src/__test__/sum.test.ts\""
   },
   "keywords": [],
   "author": "",

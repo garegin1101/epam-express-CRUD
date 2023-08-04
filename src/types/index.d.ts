@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from "express";
-import { RawUser } from "../DB/users/user.interface.ts";
+import { User } from "../entity/User.ts";
 
+export type RawUser = Pick<User, "name" | "age" | "gender">;
 declare global {
     namespace Express {
         export interface Request {

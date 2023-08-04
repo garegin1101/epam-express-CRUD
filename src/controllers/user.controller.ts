@@ -1,6 +1,5 @@
-import { RawUser } from "../DB/users/user.interface.js";
 import userService from "../services/user.service.js";
-import { Middleware } from "../types/index.js";
+import { Middleware, RawUser } from "../types/index.js";
 
 const getUsers: Middleware = async (req, res, next) => {
     try {
@@ -48,8 +47,12 @@ const updateUser: Middleware = async (req, res, next) => {
 const deleteUser: Middleware = async (req, res, next) => {
     try {
         const id = +req.params.id;
-        await userService.deleteUser(id)
-        ? res.send("user successfuly deleted") : res.status(404).send("There is no such user")
+        const user = await userService.getUser(id);
+        if(user) {
+         await userService.deleteUser(id)
+         res.send("user successfuly deleted")
+        } 
+        else res.status(404).send("There is no such user")
  
      } catch(err) {
         next(err)
@@ -59,8 +62,12 @@ const deleteUser: Middleware = async (req, res, next) => {
 const activateUser: Middleware = async (req, res, next) => {
     try {
         const id = +req.params.id;
-        const newUser = await userService.activateUser(id);
-        newUser ? res.send(newUser) : res.status(404).send("There is no such user")
+        const user = await userService.getUser(id);
+        if(user) {
+         await userService.activateUser(id);
+         res.send("user successfuly activated");
+        } 
+        else res.status(404).send("There is no such user");
  
      } catch(err) {
         next(err)

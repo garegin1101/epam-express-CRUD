@@ -1,5 +1,4 @@
-import { Middleware } from "../types/index.js";
-import type { RawUser } from "../DB/users/user.interface.js";
+import { Middleware, RawUser } from "../types/index.js";
               
 export default ((req, res, next) => {
 

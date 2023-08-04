@@ -1,91 +1,41 @@
-import { readFile, writeFile } from "fs/promises";
-import { User, RawUser } from "../DB/users/user.interface.js";
-
-const usersPath = "./src/DB/users/users.json";
+import { userRepository } from "../repository/user.repository.js";
+import { RawUser } from "../types/index.js";
 
 const getUsers = async () => {
-    const res = await readFile(usersPath);
-    const users: User[] = JSON.parse(res.toString());
+    const users = await userRepository.getUsers()
     return users;
 };
 
-const getUser = async (id: number) => { 
-    const users = await getUsers();
-    const user = users.find(user => user.id === id);
+const getUser = async (id: number) => {
+    const user = await userRepository.getUserById(id);
     return user
 };
 
-const createUser = async (rawUser: RawUser) => { 
-    const users = await getUsers();
-    const timestamp = new Date();
-    const user: User = {
-        id: Date.now(),
-        status: false,
-        "creation timestamp": timestamp,
-        "modification timestamp": timestamp,
-        ...rawUser
-    }
-    users.push(user)
-    const jsonUsers = JSON.stringify(users,null,2);
-    await writeFile(usersPath, jsonUsers);
+const createUser = async (rawUser: RawUser) => {
+    const user = await userRepository.createUser(rawUser);
     return user;
 };
 
 const updateUser = async (rawUser: RawUser, id: number) => { 
 
-    const users = await getUsers();
-    const user = users.find(user => user.id === id);
-    if(user) {
-        const timestamp = new Date();
-
-        const newUser: User = {
-            ...user,
-            "modification timestamp": timestamp,
-            ...rawUser
-        }
-        const newUsers = users.map(u => {
-            if(u.id === id) return newUser;
-            return u
-        })
-
-        const jsonUsers = JSON.stringify(newUsers,null,2);
-        await writeFile(usersPath, jsonUsers);
-        return newUser
-    }
+    await userRepository.updateUserById(rawUser, id);
+    const newUser = await userRepository.getUserById(id);
+    return newUser;
 
 };
 
-const deleteUser = async (id: number) => { 
-    const users = await getUsers();
-    const myUser = users.find(user => user.id === id);
-    if(myUser) {
-        const usersWithoutMyUser = users.filter(user => user.id !== id);
-        const jsonUsers = JSON.stringify(usersWithoutMyUser,null,2);
-        await writeFile(usersPath, jsonUsers);
-        return true
-    }
+const deleteUser = async (id: number) => {
+
+    await userRepository.delete(id);
+
 };
 
 const activateUser = async (id: number) => { 
-    const users = await getUsers();
-    const user = users.find(user => user.id === id);
-    if(user) {
-        const timestamp = new Date();
+    
+    const user = await userRepository.activateUser(id);
+    console.log(user)
+    return user;
 
-        const newUser: User = {
-            ...user,
-            "modification timestamp": timestamp,
-            status: true
-        }
-        const newUsers = users.map(u => {
-            if(u.id === id) return newUser;
-            return u
-        })
-
-        const jsonUsers = JSON.stringify(newUsers,null,2);
-        await writeFile(usersPath, jsonUsers);
-        return newUser
-    }
 };
 
 
